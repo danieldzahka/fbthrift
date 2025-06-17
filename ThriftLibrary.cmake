@@ -78,6 +78,7 @@ macro(thrift_object
     OBJECT
     ${${file_name}-${language}-SOURCES}
   )
+  target_link_libraries("${file_name}-${language}-obj" PRIVATE ${THRIFTCPP2})
   add_dependencies(
     "${file_name}-${language}-obj"
     "${file_name}-${language}-target"

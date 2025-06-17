@@ -253,6 +253,7 @@ add_library(
   gen/module_types_cpp.cpp
   runtime/BaseSchemaRegistry.cpp
   security/AsyncStopTLS.cpp
+  security/AsyncPSP.cpp
   security/FizzPeeker.cpp
   security/SSLUtil.cpp
   security/extensions/ThriftParametersClientExtension.cpp
@@ -341,6 +342,9 @@ add_library(
   visitation/visit_by_thrift_field_metadata.cpp
   ${RocketUpgrade-cpp2-SOURCES}
 )
+
+add_subdirectory(psp-ynl)
+
 add_dependencies(
   thriftcpp2
   rpcmetadata
@@ -368,6 +372,7 @@ target_link_libraries(
     thriftanyrep
     serverdbginfo
     ${Xxhash_LIBRARY}
+    psp_ynl
 )
 
 add_library(
@@ -423,6 +428,7 @@ install(
     thriftprotocol
     thriftcpp2
     serverdbginfo
+    psp_ynl
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}
 )

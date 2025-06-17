@@ -213,6 +213,7 @@ struct NegotiationParameters {
   @cpp.Type{name = "std::uint64_t"}
   1: optional i64 compressionAlgos;
   2: optional bool useStopTLS;
+  3: optional bool usePSP;
 }
 
 // String type optimized for generated code

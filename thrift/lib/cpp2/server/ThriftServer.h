@@ -147,6 +147,7 @@ class ThriftTlsConfig : public wangle::CustomConfig {
  public:
   bool enableThriftParamsNegotiation{true};
   bool enableStopTLS{false};
+  bool enablePSP{false};
 };
 
 class TLSCredentialWatcher {

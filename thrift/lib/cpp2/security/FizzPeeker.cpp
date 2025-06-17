@@ -96,6 +96,13 @@ void ThriftFizzAcceptorHandshakeHelper::fizzHandshakeSuccess(
     // (which will trigger an error) when its own timer elapses.
     stopTLSAsyncFrame_->start(
         transport, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
+  } else if (thriftExtension_ && thriftExtension_->getNegotiatedUsePSP()) {
+    LOG(INFO) << "starting psp upgrade extension";
+    if (!pynl_)
+      LOG(FATAL) << "pynl_ is null";
+    pspUpgradeFrame_.reset(
+        new apache::thrift::AsyncPspUpgrade(*this, pynl_.get()));
+    pspUpgradeFrame_->start(transport, std::chrono::milliseconds(0));
   } else {
     callback_->connectionReady(
         std::move(transport_),
@@ -103,6 +110,20 @@ void ThriftFizzAcceptorHandshakeHelper::fizzHandshakeSuccess(
         SecureTransportType::TLS,
         wangle::SSLErrorEnum::NO_ERROR);
   }
+}
+
+void ThriftFizzAcceptorHandshakeHelper::PspUpgradeSuccess() {
+  LOG(INFO) << "Finished PSP upgrade";
+  stopTLSAsyncFrame_.reset(new AsyncStopTLS(*this));
+  stopTLSAsyncFrame_->start(
+      transport_.get(),
+      AsyncStopTLS::Role::Server,
+      std::chrono::milliseconds(0));
+}
+
+void ThriftFizzAcceptorHandshakeHelper::PspUpgradeError(
+    const folly::exception_wrapper& ew) {
+  LOG(ERROR) << "psp upgrade error. ex=" << folly::exceptionStr(ew);
 }
 
 void ThriftFizzAcceptorHandshakeHelper::stopTLSSuccess(

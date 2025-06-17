@@ -42,10 +42,12 @@ class ThriftParametersClientExtension : public fizz::ClientExtensions {
   }
 
   bool getNegotiatedStopTLS() const { return negotiatedStopTLS_; }
+  bool getNegotiatedUsePSP() const { return negotiatedUsePSP_; }
 
  private:
   folly::Optional<CompressionAlgorithm> negotiatedThriftCompressionAlgo_;
   bool negotiatedStopTLS_{false};
+  bool negotiatedUsePSP_{false};
   std::shared_ptr<ThriftParametersContext> context_;
 };
 } // namespace apache::thrift

@@ -28,8 +28,10 @@ class ThriftParametersContext {
   }
 
   void setUseStopTLS(bool useStopTLS) { useStopTLS_ = useStopTLS; }
+  void setUsePSP(bool usePSP) { usePSP_ = usePSP; }
 
   bool getUseStopTLS() { return useStopTLS_; }
+  bool getUsePSP() { return usePSP_; }
 
  private:
   static constexpr std::array<CompressionAlgorithm, 2>
@@ -38,5 +40,6 @@ class ThriftParametersContext {
           CompressionAlgorithm::ZLIB,
       }};
   bool useStopTLS_{false};
+  bool usePSP_{false};
 };
 } // namespace apache::thrift

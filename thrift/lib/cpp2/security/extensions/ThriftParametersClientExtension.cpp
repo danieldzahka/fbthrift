@@ -29,6 +29,7 @@ ThriftParametersClientExtension::getClientHelloExtensions() const {
   }
   params.compressionAlgos_ref() = compressionAlgorithms;
   params.useStopTLS_ref() = context_->getUseStopTLS();
+  params.usePSP_ref() = context_->getUsePSP();
   ThriftParametersExt paramsExt;
   paramsExt.params = params;
   clientExtensions.push_back(encodeThriftExtension(paramsExt));
@@ -57,6 +58,8 @@ void ThriftParametersClientExtension::onEncryptedExtensions(
   }
   negotiatedStopTLS_ = context_->getUseStopTLS() &&
       serverParams->params.useStopTLS_ref().value_or(false);
+  negotiatedUsePSP_ = context_->getUsePSP() &&
+      serverParams->params.usePSP_ref().value_or(false);
 }
 
 } // namespace apache::thrift
